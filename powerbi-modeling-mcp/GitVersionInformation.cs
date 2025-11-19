@@ -1,9 +1,6 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: GitVersionInformation
-// Assembly: powerbi-modeling-mcp, Version=0.1.8.0, Culture=neutral, PublicKeyToken=null
-// MVID: CDD9E884-C068-49FC-87A3-CA29AC607043
-// Assembly location: powerbi-modeling-mcp.dll inside D:\mcp\powerbi-modeling-mcp\extension\server\powerbi-modeling-mcp.exe)
-
+﻿// Copyright (c) 2025 Power BI Modeling MCP
+// Licensed under the MIT License
+//
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 

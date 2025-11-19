@@ -1,4 +1,7 @@
-﻿using System.Reflection;
+﻿// Copyright (c) 2025 Power BI Modeling MCP
+// Licensed under the MIT License
+//
+using System.Reflection;
 
 [assembly: AssemblyCompany("powerbi-modeling-mcp")]
 [assembly: AssemblyConfiguration("release")]

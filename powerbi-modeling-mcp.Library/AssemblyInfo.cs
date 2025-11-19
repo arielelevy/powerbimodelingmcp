@@ -1,4 +1,7 @@
-﻿using System.Reflection;
+﻿// Copyright (c) 2025 Power BI Modeling MCP
+// Licensed under the MIT License
+//
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 // Extension attribute is not needed in modern C# - the compiler generates it automatically
