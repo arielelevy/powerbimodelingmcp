@@ -1,0 +1,66 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>PowerBIModelingMCP.Library</AssemblyName>
+    <RootNamespace>PowerBIModelingMCP.Library</RootNamespace>
+    <Version>0.1.8</Version>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Azure packages - Available in NuGet -->
+    <PackageReference Include="Azure.Core" Version="1.44.1" />
+    <PackageReference Include="Azure.Identity" Version="1.13.1" />
+
+    <!-- Microsoft Extensions - Available in NuGet -->
+    <PackageReference Include="Microsoft.Extensions.AI.Abstractions" Version="9.10.0-*" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
+
+    <!-- YamlDotNet - Available in NuGet -->
+    <PackageReference Include="YamlDotNet" Version="16.2.1" />
+
+    <!-- Microsoft Analysis Services - Using local DLLs (not available in exact versions on NuGet) -->
+    <Reference Include="Microsoft.AnalysisServices.AdomdClient">
+      <HintPath>lib\Microsoft.AnalysisServices.AdomdClient.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.AnalysisServices.Core">
+      <HintPath>lib\Microsoft.AnalysisServices.Core.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.AnalysisServices">
+      <HintPath>lib\Microsoft.AnalysisServices.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.AnalysisServices.Tabular">
+      <HintPath>lib\Microsoft.AnalysisServices.Tabular.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.AnalysisServices.Runtime.Core">
+      <HintPath>lib\Microsoft.AnalysisServices.Runtime.Core.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+
+    <!-- Model Context Protocol - Using local DLLs (not available on NuGet) -->
+    <Reference Include="ModelContextProtocol">
+      <HintPath>lib\ModelContextProtocol.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="ModelContextProtocol.Core">
+      <HintPath>lib\ModelContextProtocol.Core.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Exclude the lib folder from compilation -->
+    <Compile Remove="lib\**" />
+    <EmbeddedResource Remove="lib\**" />
+    <None Remove="lib\**" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,3 @@
+D:\mcp\powerbi-modeling-mcp\extension\server\src\PowerBIModelingMCP.Library\obj\Debug\net8.0\PowerBIModelingMCP.Library.csproj.AssemblyReference.cache
+D:\mcp\powerbi-modeling-mcp\extension\server\src\PowerBIModelingMCP.Library\obj\Debug\net8.0\PowerBIModelingMCP.Library.GeneratedMSBuildEditorConfig.editorconfig
+D:\mcp\powerbi-modeling-mcp\extension\server\src\PowerBIModelingMCP.Library\obj\Debug\net8.0\PowerBIModelingMCP.Library.csproj.CoreCompileInputs.cache

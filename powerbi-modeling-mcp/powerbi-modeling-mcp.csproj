@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>powerbi-modeling-mcp</AssemblyName>
+    <RootNamespace>PowerBIModelingMCP</RootNamespace>
+    <Version>0.1.8</Version>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Microsoft Hosting -->
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+
+    <!-- Model Context Protocol - Using local DLLs (not available on NuGet) -->
+    <Reference Include="ModelContextProtocol">
+      <HintPath>..\lib\ModelContextProtocol.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="ModelContextProtocol.Core">
+      <HintPath>..\lib\ModelContextProtocol.Core.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Reference to the library project -->
+    <ProjectReference Include="..\PowerBIModelingMCP.Library\PowerBIModelingMCP.Library.csproj" />
+  </ItemGroup>
+
+</Project>
