@@ -17,7 +17,9 @@
   <ItemGroup>
     <!-- Microsoft Hosting -->
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.2.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.2.1" />
 
     <!-- Model Context Protocol - Using local DLLs (not available on NuGet) -->
     <Reference Include="ModelContextProtocol">
@@ -32,7 +34,7 @@
 
   <ItemGroup>
     <!-- Reference to the library project -->
-    <ProjectReference Include="..\PowerBIModelingMCP.Library\PowerBIModelingMCP.Library.csproj" />
+    <ProjectReference Include="..\powerbi-modeling-mcp.Library\PowerBIModelingMCP.Library.csproj" />
   </ItemGroup>
 
 </Project>

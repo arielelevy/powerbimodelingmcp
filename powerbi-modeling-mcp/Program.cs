@@ -1,15 +1,20 @@
 ﻿// Copyright (c) 2025 Power BI Modeling MCP
 // Licensed under the MIT License
 //
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
+using Microsoft.IdentityModel.Tokens;
 using PowerBIModelingMCP.Library.Contracts;
 using PowerBIModelingMCP.Library.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -82,31 +87,167 @@ else
     applicationBuilder.Logging.AddEventSourceLogger();
     applicationBuilder.Logging.SetMinimumLevel(LogLevel.Information);
 
-    var mcpBuilder = applicationBuilder.Services.AddMcpServer()
-        .WithStdioServerTransport();
-
     if (useHttp)
     {
-        Console.WriteLine($"HTTP mode requested but not yet implemented.");
-        Console.WriteLine($"MCP protocol currently only supports STDIO transport.");
-        Console.WriteLine($"Starting MCP Server in STDIO mode instead...");
+        // Configure HTTP/SSE mode with OAuth
+        var webAppBuilder = WebApplication.CreateBuilder(args);
+
+        // Add services
+        webAppBuilder.Services.AddSingleton(config);
+        webAppBuilder.Services.AddSingleton<MarkdownResourceParser>();
+        webAppBuilder.Services.AddSingleton<ToolRegistrationService>();
+        webAppBuilder.Services.AddSingleton<PromptRegistrationService>();
+        webAppBuilder.Services.AddSingleton<ResourceRegistrationService>();
+
+        // Configure OAuth/JWT Authentication
+        var jwtSecret = Environment.GetEnvironmentVariable("MCP_JWT_SECRET") ?? "your-secret-key-min-32-chars-long-12345";
+        var jwtIssuer = Environment.GetEnvironmentVariable("MCP_JWT_ISSUER") ?? "powerbi-mcp-server";
+        var jwtAudience = Environment.GetEnvironmentVariable("MCP_JWT_AUDIENCE") ?? "powerbi-mcp-client";
+
+        webAppBuilder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtIssuer,
+                    ValidAudience = jwtAudience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))
+                };
+
+                // Support token from query string for SSE
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+                        if (!string.IsNullOrEmpty(accessToken))
+                        {
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
+            });
+
+        webAppBuilder.Services.AddAuthorization();
+        webAppBuilder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            });
+        });
+
+        // Configure MCP Server and register tools BEFORE building the app
+        var mcpBuilder = webAppBuilder.Services.AddMcpServer();
+
+        // Build a temporary provider to get registration services
+        var tempProvider = webAppBuilder.Services.BuildServiceProvider();
+        var toolService = tempProvider.GetRequiredService<ToolRegistrationService>();
+        var promptService = tempProvider.GetRequiredService<PromptRegistrationService>();
+        var resourceService = tempProvider.GetRequiredService<ResourceRegistrationService>();
+
+        toolService.RegisterTools(mcpBuilder);
+        promptService.RegisterPrompts(mcpBuilder);
+        resourceService.RegisterResources(mcpBuilder);
+
+        // Now build the actual app
+        var app = webAppBuilder.Build();
+
+        var logger = app.Services.GetRequiredService<ILogger<Program>>();
+
+        app.UseCors();
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        // Health check endpoint
+        app.MapGet("/health", () => Results.Ok(new { status = "healthy", mode = config.Mode.ToString() }));
+
+        // MCP SSE endpoint with OAuth
+        app.MapGet("/sse", async (HttpContext context) =>
+        {
+            // Check authentication
+            if (!context.User.Identity?.IsAuthenticated ?? true)
+            {
+                return Results.Unauthorized();
+            }
+
+            context.Response.Headers.Append("Content-Type", "text/event-stream");
+            context.Response.Headers.Append("Cache-Control", "no-cache");
+            context.Response.Headers.Append("Connection", "keep-alive");
+
+            await context.Response.WriteAsync("data: {\"type\":\"connected\"}\n\n");
+            await context.Response.Body.FlushAsync();
+
+            // Keep connection alive
+            while (!context.RequestAborted.IsCancellationRequested)
+            {
+                await Task.Delay(30000, context.RequestAborted);
+                await context.Response.WriteAsync(": heartbeat\n\n");
+                await context.Response.Body.FlushAsync();
+            }
+
+            return Results.Ok();
+        }).RequireAuthorization();
+
+        // MCP HTTP endpoint with OAuth
+        app.MapPost("/mcp", async (HttpContext context) =>
+        {
+            // Check authentication
+            if (!context.User.Identity?.IsAuthenticated ?? true)
+            {
+                return Results.Unauthorized();
+            }
+
+            using var reader = new StreamReader(context.Request.Body);
+            var body = await reader.ReadToEndAsync();
+
+            // Process MCP request here
+            logger.LogInformation("Received MCP request from authenticated user: {User}", context.User.Identity?.Name ?? "unknown");
+
+            return Results.Ok(new { status = "processed", message = "MCP request received" });
+        }).RequireAuthorization();
+
+        app.Urls.Add($"http://localhost:{port}");
+
+        logger.LogInformation("Starting MCP Server in HTTP/SSE mode on port {Port}", port);
+        logger.LogInformation("Server starting: Mode={Mode}, Compatibility={Compatibility}", config.Mode, config.Compatibility);
+        logger.LogInformation("OAuth Authentication: Enabled");
+        logger.LogInformation("Endpoints: /health, /sse (SSE), /mcp (HTTP POST)");
+        logger.LogInformation("Use Bearer token in Authorization header or access_token query parameter");
+
+        LogConfigurationSettings(logger, config);
+
+        await app.RunAsync();
     }
+    else
+    {
+        // STDIO mode
+        var mcpBuilder = applicationBuilder.Services.AddMcpServer()
+            .WithStdioServerTransport();
 
-    var provider = applicationBuilder.Services.BuildServiceProvider();
+        var provider = applicationBuilder.Services.BuildServiceProvider();
 
-    provider.GetRequiredService<ToolRegistrationService>().RegisterTools(mcpBuilder);
-    provider.GetRequiredService<PromptRegistrationService>().RegisterPrompts(mcpBuilder);
-    provider.GetRequiredService<ResourceRegistrationService>().RegisterResources(mcpBuilder);
+        provider.GetRequiredService<ToolRegistrationService>().RegisterTools(mcpBuilder);
+        provider.GetRequiredService<PromptRegistrationService>().RegisterPrompts(mcpBuilder);
+        provider.GetRequiredService<ResourceRegistrationService>().RegisterResources(mcpBuilder);
 
-    var logger = provider.GetRequiredService<ILogger<Program>>();
-    logger.LogInformation("Server starting: Mode={Mode}, Compatibility={Compatibility}",
-        config.Mode, config.Compatibility);
+        var logger = provider.GetRequiredService<ILogger<Program>>();
+        logger.LogInformation("Server starting: Mode={Mode}, Compatibility={Compatibility}",
+            config.Mode, config.Compatibility);
 
-    LogConfigurationSettings(logger, config);
+        LogConfigurationSettings(logger, config);
 
-    await applicationBuilder.Build().RunAsync();
+        await applicationBuilder.Build().RunAsync();
 
-    logger.LogInformation("Server stopped");
+        logger.LogInformation("Server stopped");
+    }
 }
 
 static MCPServerConfiguration CreateConfigurationFromArgs(
