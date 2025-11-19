@@ -1,3 +1,17 @@
 D:\mcp\powerbi-modeling-mcp\extension\server\src\PowerBIModelingMCP.Library\obj\Debug\net8.0\PowerBIModelingMCP.Library.csproj.AssemblyReference.cache
 D:\mcp\powerbi-modeling-mcp\extension\server\src\PowerBIModelingMCP.Library\obj\Debug\net8.0\PowerBIModelingMCP.Library.GeneratedMSBuildEditorConfig.editorconfig
 D:\mcp\powerbi-modeling-mcp\extension\server\src\PowerBIModelingMCP.Library\obj\Debug\net8.0\PowerBIModelingMCP.Library.csproj.CoreCompileInputs.cache
+D:\mcp\powerbi-modeling-mcp\powerbi-modeling-mcp.Library\bin\Debug\net8.0\PowerBIModelingMCP.Library.deps.json
+D:\mcp\powerbi-modeling-mcp\powerbi-modeling-mcp.Library\bin\Debug\net8.0\PowerBIModelingMCP.Library.dll
+D:\mcp\powerbi-modeling-mcp\powerbi-modeling-mcp.Library\bin\Debug\net8.0\PowerBIModelingMCP.Library.pdb
+D:\mcp\powerbi-modeling-mcp\powerbi-modeling-mcp.Library\bin\Debug\net8.0\ModelContextProtocol.Core.dll
+D:\mcp\powerbi-modeling-mcp\powerbi-modeling-mcp.Library\bin\Debug\net8.0\ModelContextProtocol.dll
+D:\mcp\powerbi-modeling-mcp\powerbi-modeling-mcp.Library\obj\Debug\net8.0\PowerBIModelingMCP.Library.csproj.AssemblyReference.cache
+D:\mcp\powerbi-modeling-mcp\powerbi-modeling-mcp.Library\obj\Debug\net8.0\PowerBIModelingMCP.Library.GeneratedMSBuildEditorConfig.editorconfig
+D:\mcp\powerbi-modeling-mcp\powerbi-modeling-mcp.Library\obj\Debug\net8.0\PowerBIModelingMCP.Library.csproj.CoreCompileInputs.cache
+D:\mcp\powerbi-modeling-mcp\powerbi-modeling-mcp.Library\obj\Debug\net8.0\PowerBIModelingMCP.Library.sourcelink.json
+D:\mcp\powerbi-modeling-mcp\powerbi-modeling-mcp.Library\obj\Debug\net8.0\PowerBIM.FCAFFFF5.Up2Date
+D:\mcp\powerbi-modeling-mcp\powerbi-modeling-mcp.Library\obj\Debug\net8.0\PowerBIModelingMCP.Library.dll
+D:\mcp\powerbi-modeling-mcp\powerbi-modeling-mcp.Library\obj\Debug\net8.0\refint\PowerBIModelingMCP.Library.dll
+D:\mcp\powerbi-modeling-mcp\powerbi-modeling-mcp.Library\obj\Debug\net8.0\PowerBIModelingMCP.Library.pdb
+D:\mcp\powerbi-modeling-mcp\powerbi-modeling-mcp.Library\obj\Debug\net8.0\ref\PowerBIModelingMCP.Library.dll

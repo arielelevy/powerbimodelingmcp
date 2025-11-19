@@ -946,11 +946,11 @@
   "project": {
     "version": "0.1.8",
     "restore": {
-      "projectUniqueName": "D:\\mcp\\powerbi-modeling-mcp\\extension\\server\\src\\PowerBIModelingMCP.Library\\PowerBIModelingMCP.Library.csproj",
+      "projectUniqueName": "D:\\mcp\\powerbi-modeling-mcp\\powerbi-modeling-mcp.Library\\PowerBIModelingMCP.Library.csproj",
       "projectName": "PowerBIModelingMCP.Library",
-      "projectPath": "D:\\mcp\\powerbi-modeling-mcp\\extension\\server\\src\\PowerBIModelingMCP.Library\\PowerBIModelingMCP.Library.csproj",
+      "projectPath": "D:\\mcp\\powerbi-modeling-mcp\\powerbi-modeling-mcp.Library\\PowerBIModelingMCP.Library.csproj",
       "packagesPath": "C:\\Users\\ArielLevy\\.nuget\\packages\\",
-      "outputPath": "D:\\mcp\\powerbi-modeling-mcp\\extension\\server\\src\\PowerBIModelingMCP.Library\\obj\\",
+      "outputPath": "D:\\mcp\\powerbi-modeling-mcp\\powerbi-modeling-mcp.Library\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\ArielLevy\\AppData\\Roaming\\NuGet\\NuGet.Config"

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "BsfaVN0cTpM=",
+  "dgSpecHash": "RnHWNyyB7k4=",
   "success": true,
-  "projectFilePath": "D:\\mcp\\powerbi-modeling-mcp\\extension\\server\\src\\PowerBIModelingMCP.Library\\PowerBIModelingMCP.Library.csproj",
+  "projectFilePath": "D:\\mcp\\powerbi-modeling-mcp\\powerbi-modeling-mcp.Library\\PowerBIModelingMCP.Library.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ArielLevy\\.nuget\\packages\\azure.core\\1.44.1\\azure.core.1.44.1.nupkg.sha512",
     "C:\\Users\\ArielLevy\\.nuget\\packages\\azure.identity\\1.13.1\\azure.identity.1.13.1.nupkg.sha512",
